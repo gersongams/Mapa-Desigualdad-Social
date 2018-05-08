@@ -5,6 +5,7 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
+import {Link} from "react-router-dom";
 
 class Navbar extends Component {
 
@@ -17,11 +18,23 @@ class Navbar extends Component {
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="title" color="inherit" className={classes.flex}>
-                            Title
+                            Mapa de Vulnerabilidad Social
                         </Typography>
-                        <Button color="inherit">Mapa</Button>
-                        <Button color="inherit">Estadisticas</Button>
-                        <Button color="inherit">Data</Button>
+                        <Button color="inherit">
+                            <Link to='/' className="appTitle">
+                                Mapa
+                            </Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link to='/estadisticas' className="appTitle">
+                                Estadisticas
+                            </Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link to='/data' className="appTitle">
+                                Data
+                            </Link>
+                        </Button>
                     </Toolbar>
                 </AppBar>
             </div>

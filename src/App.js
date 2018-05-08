@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Root from './components/Root';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import './App.css';
+import {Router} from "react-router";
+import createBrowserHistory from "history/createBrowserHistory";
+
+const history = createBrowserHistory();
 
 const theme = createMuiTheme({
   palette: {
@@ -12,9 +15,11 @@ const theme = createMuiTheme({
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <Root />
-      </MuiThemeProvider>
+        <MuiThemeProvider theme={theme}>
+            <Router history={history}>
+                <Root history={history}/>
+            </Router>
+        </MuiThemeProvider>
     );
   }
 }
