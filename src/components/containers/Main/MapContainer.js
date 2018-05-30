@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import mapboxgl from 'mapbox-gl';
-import Grid from 'material-ui/Grid';
+import Grid from '@material-ui/core/Grid';
 import * as layers from '../../assets/layers';
 import * as sources from '../../assets/sources';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const classes = theme => ({
     fullGrid: {
@@ -11,7 +14,12 @@ const classes = theme => ({
         height: "100%",
         padding: "0 !important",
         margin: "0 !important",
-    }
+    },
+    rootList: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+    },
 });
 
 mapboxgl.accessToken = "pk.eyJ1IjoiZ2Vyc29uMjMxMjk0IiwiYSI6ImNqYXNycjEzYzFrc3czM3FrbnZobTNsYXIifQ.Z9xZ5zDVRYervZFNTPuiUw";
@@ -61,6 +69,7 @@ class MapContainer extends Component {
     changeLayer = (layer) => {
         this.hideAllLayers();
         layer.id.forEach((layerId) => {
+            console.log(layerId);
             this.map.setLayoutProperty(layerId, "visibility", "visible");
         });
     };
@@ -98,7 +107,7 @@ class MapContainer extends Component {
             container: this.mapContainer,
             style: "mapbox://styles/gerson231294/cjbdu3v1v8hgn2sntf58bdzwm",
             center: [-74.039, -9.489],
-            zoom: 4,
+            zoom: 4.5,
             maxZoom: 8,
             preserveDrawingBuffer: true,
             attributionControl: false
@@ -169,34 +178,44 @@ class MapContainer extends Component {
         const {classes} = this.props;
 
         return (
-            <Grid container spacing={24} className={classes.fullGrid}>
-                <Grid item xs={9} className={classes.fullGrid}>
+            <Grid container
+                  spacing={24}
+                  className={classes.fullGrid}>
+                <Grid item
+                      xs={9}
+                      className={classes.fullGrid}>
                     <div className="mapContainer">
-                        <div className="map" ref={el => this.mapContainer = el}/>
+                        <div className="map"
+                             ref={el => this.mapContainer = el}/>
                     </div>
                 </Grid>
-                <Grid item xs={3} className={classes.fullGrid}>
-                    <h4>Social Vulnerability
+                <Grid item
+                      xs={3}
+                      className={classes.fullGrid}>
+                    <h4>Mapa de Vulnerabilidad social
                     </h4>
                     <div>
-                        {
-                            this.state.toggleableLayers.map((layer) => {
-                                return (
-                                    <a
-                                        href="#"
-                                        key={layer.name}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            this.changeLayer(layer);
-                                        }
-                                        }
-                                    >
-                                        {layer.name}
-                                    </a>
-                                );
-                            })
-                        }
+                        <div className={classes.rootList}>
+                            <List component="ul">
+                                {
+                                    this.state.toggleableLayers.map((layer) => {
+                                        return (
+                                            <ListItem key={layer.name}
+                                                      button
+                                                      onClick={(e) => {
+                                                          e.preventDefault();
+                                                          e.stopPropagation();
+                                                          this.changeLayer(layer);
+                                                      }
+                                                      }
+                                                      component="li">
+                                                <ListItemText primary={layer.name}/>
+                                            </ListItem>
+                                        );
+                                    })
+                                }
+                            </List>
+                        </div>
                     </div>
                     <div className="d-flex flex-column indicadores">
                         {
