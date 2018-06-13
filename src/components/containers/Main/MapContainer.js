@@ -4,9 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import * as layers from '../../assets/layers';
 import * as sources from '../../assets/sources';
 import {withStyles} from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 const classes = theme => ({
     fullGrid: {
@@ -14,12 +15,28 @@ const classes = theme => ({
         height: "100%",
         padding: "0 !important",
         margin: "0 !important",
+        position: "relative"
     },
     rootList: {
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
     },
+    button: {
+        display: 'block',
+        marginTop: theme.spacing.unit * 2,
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120,
+        visibility: "hidden"
+    },
+    selectButton: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 100
+    }
 });
 
 mapboxgl.accessToken = "pk.eyJ1IjoiZ2Vyc29uMjMxMjk0IiwiYSI6ImNqYXNycjEzYzFrc3czM3FrbnZobTNsYXIifQ.Z9xZ5zDVRYervZFNTPuiUw";
@@ -55,7 +72,12 @@ class MapContainer extends Component {
                 name: ["Ingreso promedio"]
             }
         ],
-        lugar: null
+        lugar: null,
+        layer: {
+            id: ["idh-peru"],
+            name: ["Indice de Desarrollo Humano"]
+        },
+        open: false,
     };
 
     hideAllLayers = () => {
@@ -92,14 +114,22 @@ class MapContainer extends Component {
         this.setState({lugar: place})
     };
 
-    capitalizeFirstLetter = (str) => {
-        if (str) {
-            return str.replace(/\w\S*/g, function (txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            });
-        } else {
-            return "";
-        }
+    handleChange = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({
+            layer: event.target.value
+        }, () => {
+            this.changeLayer(this.state.layer);
+        });
+    };
+
+    handleClose = () => {
+        this.setState({open: false});
+    };
+
+    handleOpen = () => {
+        this.setState({open: true});
     };
 
     componentDidMount() {
@@ -184,6 +214,36 @@ class MapContainer extends Component {
                 <Grid item
                       xs={9}
                       className={classes.fullGrid}>
+                    <form autoComplete="off"
+                          className={classes.selectButton}>
+                        <Button onClick={this.handleOpen}
+                                variant="contained"
+                                color="secondary"
+                                className={classes.button}
+                        >
+                            {this.state.layer.name}
+                        </Button>
+                        <FormControl className={classes.formControl}>
+                            <Select
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                                onOpen={this.handleOpen}
+                                value={this.state.layerId}
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    this.state.toggleableLayers.map((layer) => {
+                                        return (
+                                            <MenuItem key={layer.name}
+                                                      value={layer}>
+                                                {layer.name}
+                                            </MenuItem>
+                                        );
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+                    </form>
                     <div className="mapContainer">
                         <div className="map"
                              ref={el => this.mapContainer = el}/>
@@ -194,29 +254,6 @@ class MapContainer extends Component {
                       className={classes.fullGrid}>
                     <h4>Mapa de Vulnerabilidad social
                     </h4>
-                    <div>
-                        <div className={classes.rootList}>
-                            <List component="ul">
-                                {
-                                    this.state.toggleableLayers.map((layer) => {
-                                        return (
-                                            <ListItem key={layer.name}
-                                                      button
-                                                      onClick={(e) => {
-                                                          e.preventDefault();
-                                                          e.stopPropagation();
-                                                          this.changeLayer(layer);
-                                                      }
-                                                      }
-                                                      component="li">
-                                                <ListItemText primary={layer.name}/>
-                                            </ListItem>
-                                        );
-                                    })
-                                }
-                            </List>
-                        </div>
-                    </div>
                     <div className="d-flex flex-column indicadores">
                         {
                             this.state.lugar !== null &&
