@@ -8,6 +8,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import BarChart from "./BarChart";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
 const classes = theme => ({
     fullGrid: {
@@ -15,7 +20,24 @@ const classes = theme => ({
         height: "100%",
         padding: "0 !important",
         margin: "0 !important",
-        position: "relative"
+        position: "relative",
+        backgroundColor: "#335C67",
+        color: "white"
+    },
+    statsGrid: {
+        width: "100%",
+        height: "100%",
+        padding: "0 !important",
+        margin: "0 !important",
+        position: "relative",
+        backgroundColor: "#335C67",
+        color: "white",
+        [theme.breakpoints.down('sm')]: {
+            display: "none"
+        },
+        [theme.breakpoints.up('md')]: {
+            display: "initial"
+        },
     },
     rootList: {
         width: '100%',
@@ -25,6 +47,7 @@ const classes = theme => ({
     button: {
         display: 'block',
         marginTop: theme.spacing.unit * 2,
+        marginLeft: theme.spacing.unit * 2,
     },
     formControl: {
         margin: theme.spacing.unit,
@@ -36,6 +59,42 @@ const classes = theme => ({
         top: 0,
         left: 0,
         zIndex: 100
+    },
+    openStats: {
+        position: "absolute",
+        bottom: theme.spacing.unit * 2,
+        right: theme.spacing.unit * 2,
+        zIndex: 100,
+        [theme.breakpoints.down('sm')]: {
+            display: "initial"
+        },
+        [theme.breakpoints.up('md')]: {
+            display: "none"
+        },
+    },
+    root: {
+        width: '100%',
+        marginTop: theme.spacing.unit * 3,
+        overflowX: 'hidden',
+    },
+    table: {
+        width: '100%',
+        backgroundColor: "#335C67",
+    },
+    attribute: {
+        maxWidth: 100,
+        padding: "1rem"
+    },
+    qty: {
+        maxWidth: 50,
+        padding: "1rem"
+    },
+    bar: {
+        maxWidth: 150,
+        padding: "1rem"
+    },
+    text: {
+        padding: "0 1rem"
     }
 });
 
@@ -72,12 +131,13 @@ class MapContainer extends Component {
                 name: ["Ingreso promedio"]
             }
         ],
-        lugar: null,
+        place: null,
         layer: {
             id: ["idh-peru"],
             name: ["Indice de Desarrollo Humano"]
         },
         open: false,
+        statsVisible: undefined
     };
 
     hideAllLayers = () => {
@@ -111,7 +171,13 @@ class MapContainer extends Component {
     };
 
     updatePlace = (place) => {
-        this.setState({lugar: place})
+        this.setState({place: place})
+    };
+
+    capitalize = (str) => {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     };
 
     handleChange = event => {
@@ -177,6 +243,7 @@ class MapContainer extends Component {
                             features: indicadores
                         });
                         if (indicadores[0].properties.ID_PROV !== ID_PROV) {
+                            /*console.log("updating: ",indicadores[0].properties);*/
                             this.updatePlace(indicadores[0].properties);
                             ID_PROV = indicadores[0].properties.FIPS;
                         }
@@ -186,6 +253,7 @@ class MapContainer extends Component {
                             features: indicadores
                         });
                         if (indicadores[0].properties.ID_PROV !== ID_PROV) {
+                            /*console.log("updating: ",indicadores[0].properties);*/
                             this.updatePlace(indicadores[0].properties);
                             ID_PROV = indicadores[0].properties.FIPS;
                         }
@@ -203,6 +271,10 @@ class MapContainer extends Component {
         this.map.remove();
     }
 
+    openStats = () => {
+
+    };
+
     render() {
 
         const {classes} = this.props;
@@ -212,13 +284,14 @@ class MapContainer extends Component {
                   spacing={24}
                   className={classes.fullGrid}>
                 <Grid item
-                      xs={9}
+                      sm={12}
+                      md={8}
                       className={classes.fullGrid}>
                     <form autoComplete="off"
                           className={classes.selectButton}>
                         <Button onClick={this.handleOpen}
-                                variant="contained"
-                                color="secondary"
+                                variant="raised"
+                                color="primary"
                                 className={classes.button}
                         >
                             {this.state.layer.name}
@@ -248,29 +321,119 @@ class MapContainer extends Component {
                         <div className="map"
                              ref={el => this.mapContainer = el}/>
                     </div>
+                    <Button onClick={this.openStats}
+                            variant="raised"
+                            color="primary"
+                            className={classes.openStats}>
+                        Ver Estadísticas
+                    </Button>
                 </Grid>
                 <Grid item
-                      xs={3}
-                      className={classes.fullGrid}>
-                    <h4>Mapa de Vulnerabilidad social
-                    </h4>
+                      sm={12}
+                      md={4}
+                      className={classes.statsGrid}>
                     <div className="d-flex flex-column indicadores">
                         {
-                            this.state.lugar !== null &&
+                            this.state.place !== null &&
                             <div>
-                                <h3>Indicadores del PNUD</h3>
-                                <div>
-                                    <div> Distrito: {this.state.lugar.P_NOMB}</div>
-                                    <div>Departamento: {this.state.lugar.ID_DEPNOM}</div>
-                                    <div>Poblacion: {this.state.lugar.Poblacion}</div>
+                                <div className={classes.text}>
+                                    <h2>Mapa de Vulnerabilidad Social</h2>
+                                    <h3>Lugar</h3>
+                                    <div>
+                                        <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
+                                        <p>Departamento: {this.capitalize(this.state.place.ID_DEPNOM)}</p>
+                                    </div>
+                                    <h3>Estadisticas del PNUD</h3>
                                 </div>
-                                <h3>Estadisticas</h3>
-                                <div>
-                                    <div>Indice de desarrollo humano: {this.state.lugar.IDH.toFixed(2)}</div>
-                                    <div>Esperanza de vida al nacer: {this.state.lugar.EVN.toFixed(2)}</div>
-                                    <div>Población Escolar: {this.state.lugar.POB_ESC.toFixed(2)}</div>
-                                    <div>Población mayor a 25 años: {this.state.lugar.POREDAD_25.toFixed(2)}</div>
-                                    <div>Ingreso Promedio: {this.state.lugar.ING_PROMED.toFixed(2)}</div>
+                                <div className={classes.root}>
+                                    <Table className={classes.table}>
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    IDH
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.IDH.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.IDH, 1]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    Poblacion
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.Poblacion}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.Poblacion, 10000000]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    Esperanza de vida al nacer
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.EVN.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.EVN, 100]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    Pob. Escolar
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.POB_ESC.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.POB_ESC, 100]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    Pob. mayor 25
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.POREDAD_25.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.POREDAD_25, 100]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell component="th"
+                                                           scope="row"
+                                                           className={classes.attribute}>
+                                                    Ingreso promedio
+                                                </TableCell>
+                                                <TableCell numeric
+                                                           className={classes.qty}>
+                                                    {this.state.place.ING_PROMED.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className={classes.bar}>
+                                                    <BarChart data={[this.state.place.ING_PROMED, 1500]}/>
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
                                 </div>
                             </div>
                         }
