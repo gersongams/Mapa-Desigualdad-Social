@@ -13,6 +13,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Drawer from "@material-ui/core/Drawer";
 
 const classes = theme => ({
     fullGrid: {
@@ -95,6 +96,9 @@ const classes = theme => ({
     },
     text: {
         padding: "0 1rem"
+    },
+    drawer: {
+        width: "100%"
     }
 });
 
@@ -137,7 +141,7 @@ class MapContainer extends Component {
             name: ["Indice de Desarrollo Humano"]
         },
         open: false,
-        statsVisible: undefined
+        drawerOpened: false,
     };
 
     hideAllLayers = () => {
@@ -271,8 +275,10 @@ class MapContainer extends Component {
         this.map.remove();
     }
 
-    openStats = () => {
-
+    toggleDrawer = (value) => () => {
+        this.setState({
+            drawerOpened: value,
+        });
     };
 
     render() {
@@ -321,7 +327,7 @@ class MapContainer extends Component {
                         <div className="map"
                              ref={el => this.mapContainer = el}/>
                     </div>
-                    <Button onClick={this.openStats}
+                    <Button onClick={this.toggleDrawer(true)}
                             variant="raised"
                             color="primary"
                             className={classes.openStats}>
@@ -439,8 +445,141 @@ class MapContainer extends Component {
                         }
                     </div>
                 </Grid>
+                {this.renderDrawer(classes)}
             </Grid>
 
+        );
+    }
+
+    renderDrawer(classes) {
+        return (
+            <Drawer open={this.state.drawerOpened}
+                    anchor="right"
+                    onClose={this.toggleDrawer(false)}
+                    className={classes.drawer}
+            >
+                <div tabIndex={0}
+                     role="button"
+                     onClick={this.toggleDrawer(false)}
+                     onKeyDown={this.toggleDrawer(false)}
+                >
+                    <div className="lateralDrawer">
+                        <div className="drawerIndicators">
+                            {
+                                this.state.place !== null &&
+                                <div className="drawerstats">
+                                    <div className={classes.text}>
+                                        <h2>Mapa de Vulnerabilidad Social</h2>
+                                        <h3>Lugar</h3>
+                                        <div>
+                                            <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
+                                            <p>Departamento: {this.capitalize(this.state.place.ID_DEPNOM)}</p>
+                                        </div>
+                                        <h3>Estadisticas del PNUD</h3>
+                                    </div>
+                                    <div className={classes.root}>
+                                        <Table className={classes.table}>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        IDH
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.IDH.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.IDH, 1]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        Poblacion
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.Poblacion}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.Poblacion, 10000000]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        Esperanza de vida al nacer
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.EVN.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.EVN, 100]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        Pob. Escolar
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.POB_ESC.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.POB_ESC, 100]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        Pob. mayor 25
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.POREDAD_25.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.POREDAD_25, 100]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th"
+                                                               scope="row"
+                                                               className={classes.attribute}>
+                                                        Ingreso promedio
+                                                    </TableCell>
+                                                    <TableCell numeric
+                                                               className={classes.qty}>
+                                                        {this.state.place.ING_PROMED.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className={classes.bar}>
+                                                        <BarChart data={[this.state.place.ING_PROMED, 1500]}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <Button onClick={this.toggleDrawer(false)}
+                                variant="raised"
+                                color="secondary">
+                            Cerrar
+                        </Button>
+                    </div>
+                </div>
+            </Drawer>
         );
     }
 }
