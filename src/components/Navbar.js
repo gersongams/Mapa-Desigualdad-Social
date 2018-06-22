@@ -18,10 +18,12 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        backgroundColor: "#112151",
+        backgroundColor: "#0B1D51",
+        color: "white"
     },
     appBar: {
-        backgroundColor: "#112151",
+        backgroundColor: "#0B1D51",
+        color: "white"
     },
     toolBar: {
         height: "100%",
@@ -89,18 +91,18 @@ class Navbar extends Component {
                             </Link>
                         </Typography>
                         <div className={classes.buttons}>
-                            <Button color="inherit">
-                                <Link to='/estadisticas'
-                                      className="appTitle">
+                            <Link to='/estadisticas'
+                                  className="appTitle">
+                                <Button color="inherit">
                                     Estadisticas
-                                </Link>
-                            </Button>
-                            <Button color="inherit">
-                                <Link to='/data'
-                                      className="appTitle">
+                                </Button>
+                            </Link>
+                            <Link to='/data'
+                                  className="appTitle">
+                                <Button color="inherit">
                                     Data
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
                         </div>
                     </Toolbar>
                 </AppBar>

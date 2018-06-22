@@ -8,7 +8,13 @@ const history = createBrowserHistory();
 
 const theme = createMuiTheme({
     palette: {
-        type: 'dark',
+        primary: {
+            main: "#FF3F00"
+        },
+        secondary: {
+            main: "#BEB7A4"
+        },
+        type: "dark"
     },
 });
 

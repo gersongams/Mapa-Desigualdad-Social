@@ -22,7 +22,7 @@ const classes = theme => ({
         padding: "0 !important",
         margin: "0 !important",
         position: "relative",
-        backgroundColor: "#335C67",
+        backgroundColor: "black",
         color: "white"
     },
     statsGrid: {
@@ -31,7 +31,7 @@ const classes = theme => ({
         padding: "0 !important",
         margin: "0 !important",
         position: "relative",
-        backgroundColor: "#335C67",
+        backgroundColor: "black",
         color: "white",
         [theme.breakpoints.down('sm')]: {
             display: "none"
@@ -80,7 +80,7 @@ const classes = theme => ({
     },
     table: {
         width: '100%',
-        backgroundColor: "#335C67",
+        backgroundColor: "black",
     },
     attribute: {
         maxWidth: 100,
@@ -379,7 +379,7 @@ class MapContainer extends Component {
                                                     {this.state.place.Poblacion}
                                                 </TableCell>
                                                 <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.Poblacion, 10000000]}/>
+                                                    <BarChart data={[this.state.place.Poblacion, 1500000]}/>
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
