@@ -21,7 +21,11 @@ const styles = theme => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column"
+        flexDirection: "column",
+        [theme.breakpoints.down('sm')]: {
+            height: "calc(100vh - 56px)",
+        },
+
     },
     title: {
         margin: 0
@@ -38,7 +42,7 @@ class Creditos extends Component {
                 <h2 className={classes.title}>
                     Datos usados
                 </h2>
-                <p>
+                <p style={{padding: "0 2rem"}}>
                     En este proyecto se usarón los datos provistos por <a href="http://www.pe.undp.org/">ONU</a>.
                     Para descargar los datos puede hacer click en el siguiente enlace:
                 </p>

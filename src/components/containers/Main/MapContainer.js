@@ -42,7 +42,7 @@ const classes = theme => ({
     },
     rootList: {
         width: '100%',
-        maxWidth: 360,
+        maxWidth: "100%",
         backgroundColor: theme.palette.background.paper,
     },
     button: {
@@ -76,10 +76,12 @@ const classes = theme => ({
     root: {
         width: '100%',
         marginTop: theme.spacing.unit * 3,
-        overflowX: 'hidden',
+        overflow: 'hidden',
+        height: "100%",
     },
     table: {
         width: '100%',
+        height: "100%",
         backgroundColor: "black",
     },
     attribute: {
@@ -106,7 +108,14 @@ const classes = theme => ({
         alignItems: "center",
         textAlign: "center",
         height: "100%",
-        padding: "0 2rem"
+        padding: "0 2rem",
+        width: "100%"
+    },
+    statsContainer: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column"
     }
 });
 
@@ -351,7 +360,7 @@ class MapContainer extends Component {
                                 <div className={classes.message}>
                                     <p>Pasa el mouse por una de las regiones para visualizar sus estadisticas</p>
                                 </div> :
-                                <div>
+                                <div className={classes.statsContainer}>
                                     <div className={classes.text}>
                                         <h2>Mapa de Desigualdad Social</h2>
                                         <h3>Lugar</h3>

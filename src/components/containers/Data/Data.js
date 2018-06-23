@@ -55,7 +55,7 @@ const styles = theme => ({
     cityListContainer: {
         height: '100%',
         overflow: "hidden",
-        maxWidth: 360,
+        maxWidth: "100%",
         backgroundColor: "black",
     },
     cityList: {
@@ -79,6 +79,11 @@ const styles = theme => ({
         overflowX: 'auto',
         padding: '0 1rem'
     },
+    tableContainer: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "2rem"
+    }
 });
 
 function getSorting(order, orderBy) {
@@ -220,98 +225,100 @@ class Data extends Component {
                     <Grid item
                           className={classes.statsWrapper}
                           md={9}>
-                        <div className={classes.titleZone}>
-                            <h3>Datos por distrito del departamento de: {this.state.selected_dep}</h3>
-                        </div>
-                        <div className={classes.buttons}>
-                            <form autoComplete="off"
-                                  className={classes.selectButton}>
-                                <Button onClick={this.openYearList}
-                                        variant="raised"
-                                        color="primary">
-                                    AÑO: {this.state.selectedYear}
-                                </Button>
-                                <FormControl className={classes.formControl}>
-                                    <Select
-                                        open={this.state.openYea}
-                                        onClose={this.closeYearList}
-                                        onOpen={this.openYearList}
-                                        value={this.state.selectedYear}
-                                        onChange={this.changeYear}>
-                                        {
-                                            years.map((anio) => {
-                                                return (
-                                                    <MenuItem key={anio}
-                                                              value={anio}>
-                                                        {anio}
-                                                    </MenuItem>
-                                                );
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </form>
-                        </div>
-                        <Paper className={classes.tableRoot}>
-                            <div className={classes.tableWrapper}>
-                                <Table className={classes.table}
-                                       aria-labelledby="tableTitle">
-                                    <TableHeader
-                                        order={order}
-                                        orderBy={orderBy}
-                                        onRequestSort={this.handleRequestSort}
-                                    />
-                                    <TableBody>
-                                        {data
-                                            .sort(getSorting(order, orderBy))
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map(distrito => {
-                                                const isSelected = this.isSelected(distrito.id);
-                                                return (
-                                                    <TableRow
-                                                        hover
-                                                        role="checkbox"
-                                                        aria-checked={isSelected}
-                                                        tabIndex={-1}
-                                                        key={distrito.distrito}
-                                                        selected={isSelected}
-                                                    >
-                                                        <TableCell component="th"
-                                                                   scope="row"
-                                                                   padding="none">
-                                                            {distrito.distrito}
-                                                        </TableCell>
-                                                        <TableCell numeric>{distrito.habitantes}</TableCell>
-                                                        <TableCell numeric>{distrito.idh}</TableCell>
-                                                        <TableCell numeric>{distrito.evn}</TableCell>
-                                                        <TableCell numeric>{distrito.pob_esc}</TableCell>
-                                                        <TableCell numeric>{distrito.anios_educ}</TableCell>
-                                                        <TableCell numeric>{distrito.ing_prom}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{height: 49 * emptyRows}}>
-                                                <TableCell colSpan={7}/>
-                                            </TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
+                        <div className={classes.tableContainer}>
+                            <div className={classes.titleZone}>
+                                <h3>Datos por distrito del departamento de: {this.state.selected_dep}</h3>
                             </div>
-                            <TablePagination
-                                component="div"
-                                count={data.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                backIconButtonProps={{
-                                    'aria-label': 'Previous Page',
-                                }}
-                                nextIconButtonProps={{
-                                    'aria-label': 'Next Page',
-                                }}
-                                onChangePage={this.handleChangePage}
-                            />
-                        </Paper>
+                            <div className={classes.buttons}>
+                                <form autoComplete="off"
+                                      className={classes.selectButton}>
+                                    <Button onClick={this.openYearList}
+                                            variant="raised"
+                                            color="primary">
+                                        AÑO: {this.state.selectedYear}
+                                    </Button>
+                                    <FormControl className={classes.formControl}>
+                                        <Select
+                                            open={this.state.openYea}
+                                            onClose={this.closeYearList}
+                                            onOpen={this.openYearList}
+                                            value={this.state.selectedYear}
+                                            onChange={this.changeYear}>
+                                            {
+                                                years.map((anio) => {
+                                                    return (
+                                                        <MenuItem key={anio}
+                                                                  value={anio}>
+                                                            {anio}
+                                                        </MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </form>
+                            </div>
+                            <Paper className={classes.tableRoot}>
+                                <div className={classes.tableWrapper}>
+                                    <Table className={classes.table}
+                                           aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            order={order}
+                                            orderBy={orderBy}
+                                            onRequestSort={this.handleRequestSort}
+                                        />
+                                        <TableBody>
+                                            {data
+                                                .sort(getSorting(order, orderBy))
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(distrito => {
+                                                    const isSelected = this.isSelected(distrito.id);
+                                                    return (
+                                                        <TableRow
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={distrito.distrito}
+                                                            selected={isSelected}
+                                                        >
+                                                            <TableCell component="th"
+                                                                       scope="row"
+                                                                       padding="none">
+                                                                {distrito.distrito}
+                                                            </TableCell>
+                                                            <TableCell numeric>{distrito.habitantes}</TableCell>
+                                                            <TableCell numeric>{distrito.idh}</TableCell>
+                                                            <TableCell numeric>{distrito.evn}</TableCell>
+                                                            <TableCell numeric>{distrito.pob_esc}</TableCell>
+                                                            <TableCell numeric>{distrito.anios_educ}</TableCell>
+                                                            <TableCell numeric>{distrito.ing_prom}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            {emptyRows > 0 && (
+                                                <TableRow style={{height: 49 * emptyRows}}>
+                                                    <TableCell colSpan={7}/>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                                <TablePagination
+                                    component="div"
+                                    count={data.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    backIconButtonProps={{
+                                        'aria-label': 'Previous Page',
+                                    }}
+                                    nextIconButtonProps={{
+                                        'aria-label': 'Next Page',
+                                    }}
+                                    onChangePage={this.handleChangePage}
+                                />
+                            </Paper>
+                        </div>
                     </Grid>
                 </Grid>
             </div>

@@ -43,6 +43,7 @@ const styles = theme => ({
     statsWrapper: {
         display: "flex",
         flexDirection: "column",
+        boxSizing: "border-box"
     },
     buttons: {
         display: "flex",
@@ -59,16 +60,17 @@ const styles = theme => ({
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        width: "100%"
+        width: "100%",
     },
     graphContainer: {
         height: "100%",
-        width: "100%"
+        width: "100%",
+        display: "flex",
     },
     cityListContainer: {
         height: '100%',
         overflow: "hidden",
-        maxWidth: 360,
+        maxWidth: "100%",
         backgroundColor: "black",
     },
     cityList: {
@@ -81,6 +83,12 @@ const styles = theme => ({
         minWidth: 120,
         visibility: "hidden"
     },
+    statsContainer: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column"
+    }
 });
 
 class Estadisticas extends Component {
@@ -276,166 +284,168 @@ class Estadisticas extends Component {
                     <Grid item
                           className={classes.statsWrapper}
                           md={9}>
-                        <div className={classes.titleZone}>
-                            <h3>Estadisticas de {this.state.selected_dep}</h3>
-                        </div>
-                        <div className={classes.buttons}>
-                            <form autoComplete="off"
-                                  className={classes.selectButton}>
-                                <Button onClick={this.handleOpen1}
-                                        variant="raised"
-                                        color="primary">
-                                    Atributo: {this.state.selected_prop}
-                                </Button>
-                                <FormControl className={classes.formControl}>
-                                    <Select
-                                        open={this.state.open1}
-                                        onClose={this.handleClose1}
-                                        onOpen={this.handleOpen1}
-                                        value={this.state.selected_prop}
-                                        onChange={this.changeProp}>
-                                        {
-                                            ATRIBUTOS.map((atributo) => {
-                                                return (
-                                                    <MenuItem key={atributo.code}
-                                                              value={atributo.code}>
-                                                        {atributo.name}
-                                                    </MenuItem>
-                                                );
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </form>
-                            <form autoComplete="off"
-                                  className={classes.selectButton}>
-                                <Button onClick={this.handleOpen2}
-                                        variant="raised"
-                                        color="primary">
-                                    Comparar con: {this.state.compare_with}
-                                </Button>
-                                <FormControl className={classes.formControl}>
-                                    <Select
-                                        open={this.state.open2}
-                                        onClose={this.handleClose2}
-                                        onOpen={this.handleOpen2}
-                                        value={this.state.compare_with}
-                                        onChange={this.changeComparation}
-                                    >
-                                        {
-                                            this.state.departamentos.map((departamento) => {
-                                                return (
-                                                    <MenuItem key={departamento}
-                                                              value={departamento}>
-                                                        {departamento}
-                                                    </MenuItem>
-                                                );
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </form>
-                        </div>
-                        <div className={classes.graphWrapper}>
-                            <Grid container
-                                  className={classes.graphContainer}
-                                  spacing={0}>
-                                <Grid item
-                                      md={6}
-                                      xs={12}>
-                                    <ResponsiveContainer>
-                                        <LineChart width={600}
-                                                   height={300}
-                                                   data={this.state.filteredData}
-                                                   margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                                            <XAxis dataKey="year"/>
-                                            <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
-                                            <CartesianGrid strokeDasharray="3 3"/>
-                                            <Tooltip/>
-                                            <Legend/>
-                                            <Line type="monotone"
-                                                  dataKey={this.state.selected_dep}
-                                                  stroke="#0B1D51"
-                                                  activeDot={{r: 8}}/>
-                                            <Line type="monotone"
-                                                  dataKey={this.state.compare_with}
-                                                  stroke="#fe9922"/>
-                                        </LineChart>
-                                    </ResponsiveContainer>
-                                </Grid>
-                                <Grid item
-                                      md={6}
-                                      xs={12}>
-                                    <ResponsiveContainer>
-                                        <BarChart width={600}
-                                                  height={300}
-                                                  data={this.state.filteredData}
-                                                  margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                                            <CartesianGrid strokeDasharray="3 3"/>
-                                            <XAxis dataKey="year"/>
-                                            <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
-                                            <Tooltip/>
-                                            <Legend/>
-                                            <Bar dataKey={this.state.selected_dep}
-                                                 fill="#0B1D51"/>
-                                            <Bar dataKey={this.state.compare_with}
-                                                 fill="#fe9922"/>
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </Grid>
-                                <Grid item
-                                      md={6}
-                                      xs={12}>
-                                    <ResponsiveContainer>
-                                        <AreaChart width={600}
-                                                   height={400}
-                                                   data={this.state.filteredData}
-                                                   margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                                            <CartesianGrid strokeDasharray="3 3"/>
-                                            <XAxis dataKey="year"/>
-                                            <YAxis/>
-                                            <Tooltip/>
-                                            <Area type='monotone'
-                                                  dataKey={this.state.selected_dep}
-                                                  stackId="1"
-                                                  stroke='#8884d8'
-                                                  fill='#0B1D51'/>
-                                            <Area type='monotone'
-                                                  dataKey={this.state.compare_with}
-                                                  stackId="1"
-                                                  stroke='#82ca9d'
-                                                  fill='#fe9922'/>
-                                        </AreaChart>
-                                    </ResponsiveContainer>
-                                </Grid>
-                                <Grid item
-                                      md={6}
-                                      xs={12}>
-                                    <ResponsiveContainer>
-                                        <RadarChart outerRadius={90}
-                                                    width={600}
-                                                    height={300}
-                                                    data={this.state.dataRadar}>
-                                            <PolarGrid/>
-                                            <PolarAngleAxis dataKey="attr"/>
-                                            <PolarRadiusAxis angle={90}
-                                                             domain={[0, 100]}/>
-                                            <Radar name={this.state.selected_dep}
-                                                   dataKey={this.state.selected_dep}
-                                                   stroke="#0B1D51"
-                                                   fill="#0B1D51"
-                                                   fillOpacity={0.6}/>
-                                            <Radar name={this.state.compare_with}
-                                                   dataKey={this.state.compare_with}
-                                                   stroke="#fe9922"
-                                                   fill="#fe9922"
-                                                   fillOpacity={0.6}/>
-                                            <Legend/>
+                        <div className={classes.statsContainer}>
+                            <div className={classes.titleZone}>
+                                <h3>Estadisticas de {this.state.selected_dep}</h3>
+                            </div>
+                            <div className={classes.buttons}>
+                                <form autoComplete="off"
+                                      className={classes.selectButton}>
+                                    <Button onClick={this.handleOpen1}
+                                            variant="raised"
+                                            color="primary">
+                                        Atributo: {this.state.selected_prop}
+                                    </Button>
+                                    <FormControl className={classes.formControl}>
+                                        <Select
+                                            open={this.state.open1}
+                                            onClose={this.handleClose1}
+                                            onOpen={this.handleOpen1}
+                                            value={this.state.selected_prop}
+                                            onChange={this.changeProp}>
+                                            {
+                                                ATRIBUTOS.map((atributo) => {
+                                                    return (
+                                                        <MenuItem key={atributo.code}
+                                                                  value={atributo.code}>
+                                                            {atributo.name}
+                                                        </MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </form>
+                                <form autoComplete="off"
+                                      className={classes.selectButton}>
+                                    <Button onClick={this.handleOpen2}
+                                            variant="raised"
+                                            color="primary">
+                                        Comparar con: {this.state.compare_with}
+                                    </Button>
+                                    <FormControl className={classes.formControl}>
+                                        <Select
+                                            open={this.state.open2}
+                                            onClose={this.handleClose2}
+                                            onOpen={this.handleOpen2}
+                                            value={this.state.compare_with}
+                                            onChange={this.changeComparation}
+                                        >
+                                            {
+                                                this.state.departamentos.map((departamento) => {
+                                                    return (
+                                                        <MenuItem key={departamento}
+                                                                  value={departamento}>
+                                                            {departamento}
+                                                        </MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </form>
+                            </div>
+                            <div className={classes.graphWrapper}>
+                                <Grid container
+                                      className={classes.graphContainer}
+                                      spacing={0}>
+                                    <Grid item
+                                          md={6}
+                                          xs={12}>
+                                        <ResponsiveContainer>
+                                            <LineChart width={600}
+                                                       height={300}
+                                                       data={this.state.filteredData}
+                                                       margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                                                <XAxis dataKey="year"/>
+                                                <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
+                                                <CartesianGrid strokeDasharray="3 3"/>
+                                                <Tooltip/>
+                                                <Legend/>
+                                                <Line type="monotone"
+                                                      dataKey={this.state.selected_dep}
+                                                      stroke="#0B1D51"
+                                                      activeDot={{r: 8}}/>
+                                                <Line type="monotone"
+                                                      dataKey={this.state.compare_with}
+                                                      stroke="#fe9922"/>
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </Grid>
+                                    <Grid item
+                                          md={6}
+                                          xs={12}>
+                                        <ResponsiveContainer>
+                                            <BarChart width={600}
+                                                      height={300}
+                                                      data={this.state.filteredData}
+                                                      margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                                                <CartesianGrid strokeDasharray="3 3"/>
+                                                <XAxis dataKey="year"/>
+                                                <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
+                                                <Tooltip/>
+                                                <Legend/>
+                                                <Bar dataKey={this.state.selected_dep}
+                                                     fill="#0B1D51"/>
+                                                <Bar dataKey={this.state.compare_with}
+                                                     fill="#fe9922"/>
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                    </Grid>
+                                    <Grid item
+                                          md={6}
+                                          xs={12}>
+                                        <ResponsiveContainer>
+                                            <AreaChart width={600}
+                                                       height={400}
+                                                       data={this.state.filteredData}
+                                                       margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+                                                <CartesianGrid strokeDasharray="3 3"/>
+                                                <XAxis dataKey="year"/>
+                                                <YAxis/>
+                                                <Tooltip/>
+                                                <Area type='monotone'
+                                                      dataKey={this.state.selected_dep}
+                                                      stackId="1"
+                                                      stroke='#8884d8'
+                                                      fill='#0B1D51'/>
+                                                <Area type='monotone'
+                                                      dataKey={this.state.compare_with}
+                                                      stackId="1"
+                                                      stroke='#82ca9d'
+                                                      fill='#fe9922'/>
+                                            </AreaChart>
+                                        </ResponsiveContainer>
+                                    </Grid>
+                                    <Grid item
+                                          md={6}
+                                          xs={12}>
+                                        <ResponsiveContainer>
+                                            <RadarChart outerRadius={90}
+                                                        width={600}
+                                                        height={300}
+                                                        data={this.state.dataRadar}>
+                                                <PolarGrid/>
+                                                <PolarAngleAxis dataKey="attr"/>
+                                                <PolarRadiusAxis angle={90}
+                                                                 domain={[0, 100]}/>
+                                                <Radar name={this.state.selected_dep}
+                                                       dataKey={this.state.selected_dep}
+                                                       stroke="#0B1D51"
+                                                       fill="#0B1D51"
+                                                       fillOpacity={0.6}/>
+                                                <Radar name={this.state.compare_with}
+                                                       dataKey={this.state.compare_with}
+                                                       stroke="#fe9922"
+                                                       fill="#fe9922"
+                                                       fillOpacity={0.6}/>
+                                                <Legend/>
 
-                                        </RadarChart>
-                                    </ResponsiveContainer>
+                                            </RadarChart>
+                                        </ResponsiveContainer>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            </div>
                         </div>
                     </Grid>
                 </Grid>

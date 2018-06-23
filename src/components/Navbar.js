@@ -7,13 +7,12 @@ import Button from '@material-ui/core/Button';
 import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import {DataUsage, Equalizer} from "@material-ui/icons/index";
+import {DataUsage, Equalizer, Streetview, Favorite} from "@material-ui/icons/index";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItem from "@material-ui/core/ListItem/ListItem";
-
 
 const styles = theme => ({
     root: {
@@ -91,6 +90,12 @@ class Navbar extends Component {
                             </Link>
                         </Typography>
                         <div className={classes.buttons}>
+                            <Link to='/'
+                                  className="appTitle">
+                                <Button color="inherit">
+                                    Mapa
+                                </Button>
+                            </Link>
                             <Link to='/estadisticas'
                                   className="appTitle">
                                 <Button color="inherit">
@@ -128,6 +133,18 @@ class Navbar extends Component {
                 >
                     <div className="lateralDrawer">
                         <List component="nav">
+                            <ListItem
+                                button
+                                onClick={() => {
+                                    this.props.history.push("/");
+                                    this.toggleDrawer(false);
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <Streetview/>
+                                </ListItemIcon>
+                                <ListItemText primary="Mapa"/>
+                            </ListItem>
                             <ListItem button
                                       onClick={() => {
                                           this.props.history.push("/estadisticas");
@@ -151,6 +168,19 @@ class Navbar extends Component {
                                 </ListItemIcon>
                                 <ListItemText primary="Data"/>
                             </ListItem>
+                            <ListItem
+                                button
+                                onClick={() => {
+                                    this.props.history.push("/creditos");
+                                    this.toggleDrawer(false);
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <Favorite/>
+                                </ListItemIcon>
+                                <ListItemText primary="Creditos"/>
+                            </ListItem>
+
                         </List>
                     </div>
                 </div>
