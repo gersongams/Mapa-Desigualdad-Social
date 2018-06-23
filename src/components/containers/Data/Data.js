@@ -187,6 +187,10 @@ class Data extends Component {
         this.setState({openYea: true});
     };
 
+    handleChangeRowsPerPage = event => {
+        this.setState({ rowsPerPage: event.target.value });
+    };
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
@@ -315,6 +319,7 @@ class Data extends Component {
                                     nextIconButtonProps={{
                                         'aria-label': 'Next Page',
                                     }}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                     onChangePage={this.handleChangePage}
                                 />
                             </Paper>
