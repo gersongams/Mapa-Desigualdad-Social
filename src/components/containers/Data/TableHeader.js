@@ -4,7 +4,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
@@ -37,7 +36,7 @@ class TableHeader extends Component {
     };
 
     render() {
-        const { order, orderBy } = this.props;
+        const {order, orderBy} = this.props;
 
         return (
             <TableHead>
