@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableHeader from "./TableHeader";
-import * as ListaDistritos from "../../assets/distritos";
 import * as ListaDepartamentos from '../../assets/departamentos';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -101,11 +100,22 @@ class Data extends Component {
         data: [],
         page: 0,
         rowsPerPage: 7,
-        openYea: false
+        openYea: false,
+        distritosData: []
     };
 
     componentDidMount() {
-        this.getData();
+
+        const API = 'https://api-distritos-peru.herokuapp.com/';
+        fetch(API, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {'Content-Type': 'json'},
+        })
+            .then(response => response.json())
+            .then(data => this.setState({distritosData: data}, () => this.getData()));
+
+
         this.getDepartamentos();
     }
 
@@ -119,36 +129,34 @@ class Data extends Component {
     };
 
     getData = () => {
-        let filteredData = [];
+        let filteredData;
         this.setState({page: 0});
 
-        this.setState({data: ListaDistritos.distritos}, () => {
-            filteredData = this.state.data.filter(item => item.DEPARTAMENTO === this.state.selected_dep);
-            filteredData = filteredData.map((item, index) => {
-                return {
-                    DEPARTAMENTO: item.DEPARTAMENTO,
-                    year: this.state.selectedYear,
-                    distrito: item.distrito,
-                    habitantes: item['habitantes' + "_" + this.state.selectedYear],
-                    idh: item['idh' + "_" + this.state.selectedYear],
-                    evn: item['evn' + "_" + this.state.selectedYear],
-                    pob_esc: item['pob_esc' + "_" + this.state.selectedYear],
-                    anios_educ: item['anios_educ' + "_" + this.state.selectedYear],
-                    ing_prom: item['ing_prom' + "_" + this.state.selectedYear]
-                }
-            });
-            this.setState({data: filteredData});
+        filteredData = this.state.distritosData.filter(item => item.DEPARTAMENTO === this.state.selected_dep);
+        filteredData = filteredData.map((item, index) => {
+            return {
+                DEPARTAMENTO: item.DEPARTAMENTO,
+                year: this.state.selectedYear,
+                distrito: item.distrito,
+                habitantes: item['habitantes' + "_" + this.state.selectedYear],
+                idh: item['idh' + "_" + this.state.selectedYear],
+                evn: item['evn' + "_" + this.state.selectedYear],
+                pob_esc: item['pob_esc' + "_" + this.state.selectedYear],
+                anios_educ: item['anios_educ' + "_" + this.state.selectedYear],
+                ing_prom: item['ing_prom' + "_" + this.state.selectedYear]
+            }
         });
+        this.setState({data: filteredData});
 
 
     };
 
     changeDepartment = (departamento) => {
-        this.setState({selected_dep: departamento},() => this.getData());
+        this.setState({selected_dep: departamento}, () => this.getData());
     };
 
     changeYear = (event) => {
-        this.setState({selectedYear: event.target.value},() => this.getData());
+        this.setState({selectedYear: event.target.value}, () => this.getData());
     };
 
     handleRequestSort = (event, property) => {
@@ -265,7 +273,7 @@ class Data extends Component {
                                                         role="checkbox"
                                                         aria-checked={isSelected}
                                                         tabIndex={-1}
-                                                        key={distrito.id}
+                                                        key={distrito.distrito}
                                                         selected={isSelected}
                                                     >
                                                         <TableCell component="th"
