@@ -99,6 +99,14 @@ const classes = theme => ({
     },
     drawer: {
         width: "100%"
+    },
+    message: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        height: "100%",
+        padding: "0 2rem"
     }
 });
 
@@ -155,7 +163,6 @@ class MapContainer extends Component {
     changeLayer = (layer) => {
         this.hideAllLayers();
         layer.id.forEach((layerId) => {
-            console.log(layerId);
             this.map.setLayoutProperty(layerId, "visibility", "visible");
         });
     };
@@ -338,136 +345,13 @@ class MapContainer extends Component {
                       sm={12}
                       md={4}
                       className={classes.statsGrid}>
-                    <div className="d-flex flex-column indicadores">
+                    <div className="indicadores">
                         {
-                            this.state.place !== null &&
-                            <div>
-                                <div className={classes.text}>
-                                    <h2>Mapa de Desigualdad Social</h2>
-                                    <h3>Lugar</h3>
-                                    <div>
-                                        <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
-                                        <p>Departamento: {this.capitalize(this.state.place.ID_DEPNOM)}</p>
-                                    </div>
-                                    <h3>Estadisticas del PNUD</h3>
-                                </div>
-                                <div className={classes.root}>
-                                    <Table className={classes.table}>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    IDH
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.IDH.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.IDH, 1]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    Poblacion
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.Poblacion}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.Poblacion, 1500000]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    Esperanza de vida al nacer
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.EVN.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.EVN, 100]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    Pob. Escolar
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.POB_ESC.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.POB_ESC, 100]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    Pob. mayor 25
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.POREDAD_25.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.POREDAD_25, 100]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th"
-                                                           scope="row"
-                                                           className={classes.attribute}>
-                                                    Ingreso promedio
-                                                </TableCell>
-                                                <TableCell numeric
-                                                           className={classes.qty}>
-                                                    {this.state.place.ING_PROMED.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className={classes.bar}>
-                                                    <BarChart data={[this.state.place.ING_PROMED, 1500]}/>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </Grid>
-                {this.renderDrawer(classes)}
-            </Grid>
-
-        );
-    }
-
-    renderDrawer(classes) {
-        return (
-            <Drawer open={this.state.drawerOpened}
-                    anchor="right"
-                    onClose={this.toggleDrawer(false)}
-                    className={classes.drawer}
-            >
-                <div tabIndex={0}
-                     role="button"
-                     onClick={this.toggleDrawer(false)}
-                     onKeyDown={this.toggleDrawer(false)}
-                >
-                    <div className="lateralDrawer">
-                        <div className="drawerIndicators">
-                            {
-                                this.state.place !== null &&
-                                <div className="drawerstats">
+                            !this.state.place ?
+                                <div className={classes.message}>
+                                    <p>Pasa el mouse por una de las regiones para visualizar sus estadisticas</p>
+                                </div> :
+                                <div>
                                     <div className={classes.text}>
                                         <h2>Mapa de Desigualdad Social</h2>
                                         <h3>Lugar</h3>
@@ -505,7 +389,7 @@ class MapContainer extends Component {
                                                         {this.state.place.Poblacion}
                                                     </TableCell>
                                                     <TableCell className={classes.bar}>
-                                                        <BarChart data={[this.state.place.Poblacion, 10000000]}/>
+                                                        <BarChart data={[this.state.place.Poblacion, 1500000]}/>
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow>
@@ -566,9 +450,140 @@ class MapContainer extends Component {
                                                 </TableRow>
                                             </TableBody>
                                         </Table>
-
                                     </div>
                                 </div>
+                        }
+                    </div>
+                </Grid>
+                {this.renderDrawer(classes)}
+            </Grid>
+
+        );
+    }
+
+    renderDrawer(classes) {
+        return (
+            <Drawer open={this.state.drawerOpened}
+                    anchor="right"
+                    onClose={this.toggleDrawer(false)}
+                    className={classes.drawer}
+            >
+                <div tabIndex={0}
+                     role="button"
+                     onClick={this.toggleDrawer(false)}
+                     onKeyDown={this.toggleDrawer(false)}
+                >
+                    <div className="lateralDrawer">
+                        <div className="drawerIndicators">
+                            {
+                                !this.state.place ?
+                                    <div className={classes.message}>
+                                        <p>Pasa el mouse por una de las regiones para visualizar sus estadisticas</p>
+                                    </div> :
+                                    <div className="drawerstats">
+                                        <div className={classes.text}>
+                                            <h2>Mapa de Desigualdad Social</h2>
+                                            <h3>Lugar</h3>
+                                            <div>
+                                                <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
+                                                <p>Departamento: {this.capitalize(this.state.place.ID_DEPNOM)}</p>
+                                            </div>
+                                            <h3>Estadisticas del PNUD</h3>
+                                        </div>
+                                        <div className={classes.root}>
+                                            <Table className={classes.table}>
+                                                <TableBody>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            IDH
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.IDH.toFixed(2)}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.IDH, 1]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            Poblacion
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.Poblacion}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.Poblacion, 10000000]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            Esperanza de vida al nacer
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.EVN.toFixed(2)}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.EVN, 100]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            Pob. Escolar
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.POB_ESC.toFixed(2)}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.POB_ESC, 100]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            Pob. mayor 25
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.POREDAD_25.toFixed(2)}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.POREDAD_25, 100]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell component="th"
+                                                                   scope="row"
+                                                                   className={classes.attribute}>
+                                                            Ingreso promedio
+                                                        </TableCell>
+                                                        <TableCell numeric
+                                                                   className={classes.qty}>
+                                                            {this.state.place.ING_PROMED.toFixed(2)}
+                                                        </TableCell>
+                                                        <TableCell className={classes.bar}>
+                                                            <BarChart data={[this.state.place.ING_PROMED, 1500]}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
+
+                                        </div>
+                                    </div>
+
+
                             }
 
                         </div>

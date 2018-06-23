@@ -37,6 +37,11 @@ a {
 .lateralDrawer button{
     margin-top: 2rem;
 }
+.indicadores {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
 
 .drawerIndicators{
     display: flex;

@@ -186,7 +186,6 @@ class Estadisticas extends Component {
                         fullMark: 100
                     }
                 ];
-                console.log(dataRadar);
                 this.setState({dataRadar: dataRadar});
             }
 
