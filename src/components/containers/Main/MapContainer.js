@@ -78,11 +78,14 @@ const classes = theme => ({
         marginTop: theme.spacing.unit * 3,
         overflow: 'hidden',
         height: "100%",
+        padding: "2rem",
+        boxSizing: "border-box"
     },
     table: {
         width: '100%',
         height: "100%",
-        backgroundColor: "black",
+        backgroundColor: "#333",
+        borderRadius: "10px"
     },
     attribute: {
         maxWidth: 100,
@@ -362,12 +365,28 @@ class MapContainer extends Component {
                                 </div> :
                                 <div className={classes.statsContainer}>
                                     <div className={classes.text}>
-                                        <h2>Mapa de Desigualdad Social</h2>
-                                        <h3>Lugar</h3>
-                                        <div>
-                                            <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
-                                            <p>Departamento: {this.capitalize(this.state.place.ID_DEPNOM)}</p>
+                                        <h2>MAPA DE DESIGUALDAD SOCIAL</h2>
+                                        <div style={{
+                                            backgroundColor: "#333",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            width: "100%",
+                                            padding: "1rem",
+                                            borderRadius: "10px",
+                                            boxSizing: "border-box",
+
+                                        }}>
+                                            <h3 style={{margin: "0.5rem 0"}}>Lugar</h3>
+                                            <div style={{margin: "0.5rem 0"}}>
+                                                <h4 style={{display: "inline"}}>Distrito:</h4>
+                                                <p style={{display: "inline"}}> {this.capitalize(this.state.place.P_NOMB)}</p>
+                                            </div>
+                                            <div style={{margin: "0.5rem 0"}}>
+                                                <h4 style={{display: "inline"}}>Departamento: </h4>
+                                                <p style={{display: "inline"}}>{this.capitalize(this.state.place.ID_DEPNOM)}</p>
+                                            </div>
                                         </div>
+
                                         <h3>Estadisticas del PNUD</h3>
                                     </div>
                                     <div className={classes.root}>
