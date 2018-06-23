@@ -43,7 +43,6 @@ const styles = theme => ({
     statsWrapper: {
         display: "flex",
         flexDirection: "column",
-
     },
     buttons: {
         display: "flex",

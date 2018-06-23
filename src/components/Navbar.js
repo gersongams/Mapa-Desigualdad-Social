@@ -87,7 +87,7 @@ class Navbar extends Component {
                                     className={classes.flex}>
                             <Link to='/'
                                   className="appTitle">
-                                Mapa de Vulnerabilidad Social
+                                Mapa de Desigualdad Social
                             </Link>
                         </Typography>
                         <div className={classes.buttons}>
@@ -101,6 +101,12 @@ class Navbar extends Component {
                                   className="appTitle">
                                 <Button color="inherit">
                                     Data
+                                </Button>
+                            </Link>
+                            <Link to='/creditos'
+                                  className="appTitle">
+                                <Button color="inherit">
+                                    Creditos
                                 </Button>
                             </Link>
                         </div>

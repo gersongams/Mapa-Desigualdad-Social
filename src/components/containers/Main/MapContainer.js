@@ -343,7 +343,7 @@ class MapContainer extends Component {
                             this.state.place !== null &&
                             <div>
                                 <div className={classes.text}>
-                                    <h2>Mapa de Vulnerabilidad Social</h2>
+                                    <h2>Mapa de Desigualdad Social</h2>
                                     <h3>Lugar</h3>
                                     <div>
                                         <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>
@@ -469,7 +469,7 @@ class MapContainer extends Component {
                                 this.state.place !== null &&
                                 <div className="drawerstats">
                                     <div className={classes.text}>
-                                        <h2>Mapa de Vulnerabilidad Social</h2>
+                                        <h2>Mapa de Desigualdad Social</h2>
                                         <h3>Lugar</h3>
                                         <div>
                                             <p>Distrito: {this.capitalize(this.state.place.P_NOMB)}</p>

@@ -4,6 +4,7 @@ import {Route} from "react-router-dom";
 import Estadisticas from "./containers/Stats/Estadisticas";
 import Main from "./containers/Main/Main";
 import Data from "./containers/Data/Data";
+import Creditos from "./containers/Creditos/Creditos";
 
 class Root extends Component {
 
@@ -35,6 +36,12 @@ class Root extends Component {
                 />
                 <Route exact path="/data" render={(route) =>
                     <Data
+                        route={route}
+                    />
+                }
+                />
+                <Route exact path="/creditos" render={(route) =>
+                    <Creditos
                         route={route}
                     />
                 }
