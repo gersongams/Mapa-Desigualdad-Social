@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Root from './components/Root';
+import Routes from './components/Routes';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {Router} from "react-router";
 import createBrowserHistory from "history/createBrowserHistory";
@@ -23,7 +23,7 @@ class App extends Component {
     return (
         <MuiThemeProvider theme={theme}>
             <Router history={history}>
-                <Root history={history}/>
+                <Routes history={history}/>
             </Router>
         </MuiThemeProvider>
     );

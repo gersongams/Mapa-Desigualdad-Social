@@ -23,18 +23,6 @@ class BarChart extends Component {
 
         const barwidth = 120;
         const barheight = 15;
-        const color_range = [
-            '#ffffd9',
-            '#edf8b1',
-            '#c7e9b4',
-            '#7fcdbb',
-            '#41b6c4',
-            '#1d91c0',
-            '#225ea8',
-            '#253494',
-            '#081d58'
-        ];
-
         const node = this.node;
         const dataMax = max(this.props.data);
         const yScale = scaleLinear()

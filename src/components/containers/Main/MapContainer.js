@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import mapboxgl from 'mapbox-gl';
 import Grid from '@material-ui/core/Grid';
-import * as layers from '../../assets/layers';
-import * as sources from '../../assets/sources';
+import * as layers from '../../../assets/layers';
+import * as sources from '../../../assets/sources';
 import {withStyles} from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -75,10 +75,10 @@ const classes = theme => ({
     },
     root: {
         width: '100%',
-        marginTop: theme.spacing.unit * 3,
+        marginTop: 0,
         overflow: 'hidden',
         height: "100%",
-        padding: "2rem",
+        padding: "1rem",
         boxSizing: "border-box"
     },
     table: {
@@ -197,12 +197,6 @@ class MapContainer extends Component {
         this.setState({place: place})
     };
 
-    capitalize = (str) => {
-        return str.replace(/\w\S*/g, function (txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    };
-
     handleChange = event => {
         event.preventDefault();
         event.stopPropagation();
@@ -210,6 +204,12 @@ class MapContainer extends Component {
             layer: event.target.value
         }, () => {
             this.changeLayer(this.state.layer);
+        });
+    };
+
+    capitalize = (str) => {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     };
 
@@ -235,10 +235,8 @@ class MapContainer extends Component {
         this.map.on('load', () => {
 
             this.addCustomLayers(this.map);
-
             let ID_PROV = 0;
             let click = false;
-
             this.map.on("click", (e) => {
                 click = click !== true;
             });
@@ -255,11 +253,9 @@ class MapContainer extends Component {
                             "ing_promed"
                         ]
                     });
-
                     if (indicadores.length > 0) {
                         indicadores.map((e2) => e2);
                     }
-
                     if (indicadores.length > 0 && this.map.getZoom() < 8.0) {
                         this.map.getSource("highlight").setData({
                             type: "FeatureCollection",
@@ -387,7 +383,7 @@ class MapContainer extends Component {
                                             </div>
                                         </div>
 
-                                        <h3>Estadisticas del PNUD</h3>
+                                        <h3 style={{marginBottom: 0}}>Estadisticas del PNUD</h3>
                                     </div>
                                     <div className={classes.root}>
                                         <Table className={classes.table}>

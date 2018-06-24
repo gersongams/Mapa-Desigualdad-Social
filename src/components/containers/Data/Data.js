@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableHeader from "./TableHeader";
-import * as ListaDepartamentos from '../../assets/departamentos';
+import * as ListaDepartamentos from '../../../assets/departamentos';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -41,6 +41,7 @@ const styles = theme => ({
     titleZone: {
         display: "flex",
         padding: "0 2rem",
+        justifyContent: "space-between"
     },
     graphWrapper: {
         display: "flex",
@@ -111,6 +112,8 @@ class Data extends Component {
 
     componentDidMount() {
 
+        this.getDepartamentos();
+
         const API = 'https://api-distritos-peru.herokuapp.com/';
         fetch(API, {
             method: 'GET',
@@ -119,9 +122,6 @@ class Data extends Component {
         })
             .then(response => response.json())
             .then(data => this.setState({distritosData: data}, () => this.getData()));
-
-
-        this.getDepartamentos();
     }
 
     getDepartamentos = () => {
@@ -137,23 +137,24 @@ class Data extends Component {
         let filteredData;
         this.setState({page: 0});
 
-        filteredData = this.state.distritosData.filter(item => item.DEPARTAMENTO === this.state.selected_dep);
-        filteredData = filteredData.map((item, index) => {
+        filteredData = this.state.distritosData.filter(item => {
+            return item.DEPARTAMENTO === this.state.selected_dep;
+        });
+
+        filteredData = filteredData.map((data) => {
             return {
-                DEPARTAMENTO: item.DEPARTAMENTO,
+                DEPARTAMENTO: data.DEPARTAMENTO,
                 year: this.state.selectedYear,
-                distrito: item.distrito,
-                habitantes: item['habitantes' + "_" + this.state.selectedYear],
-                idh: item['idh' + "_" + this.state.selectedYear],
-                evn: item['evn' + "_" + this.state.selectedYear],
-                pob_esc: item['pob_esc' + "_" + this.state.selectedYear],
-                anios_educ: item['anios_educ' + "_" + this.state.selectedYear],
-                ing_prom: item['ing_prom' + "_" + this.state.selectedYear]
+                distrito: data.distrito,
+                habitantes: data['habitantes' + "_" + this.state.selectedYear],
+                idh: data['idh' + "_" + this.state.selectedYear],
+                evn: data['evn' + "_" + this.state.selectedYear],
+                pob_esc: data['pob_esc' + "_" + this.state.selectedYear],
+                anios_educ: data['anios_educ' + "_" + this.state.selectedYear],
+                ing_prom: data['ing_prom' + "_" + this.state.selectedYear]
             }
         });
         this.setState({data: filteredData});
-
-
     };
 
     changeDepartment = (departamento) => {
@@ -188,7 +189,7 @@ class Data extends Component {
     };
 
     handleChangeRowsPerPage = event => {
-        this.setState({ rowsPerPage: event.target.value });
+        this.setState({rowsPerPage: event.target.value});
     };
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -232,8 +233,6 @@ class Data extends Component {
                         <div className={classes.tableContainer}>
                             <div className={classes.titleZone}>
                                 <h3>Datos por distrito del departamento de: {this.state.selected_dep}</h3>
-                            </div>
-                            <div className={classes.buttons}>
                                 <form autoComplete="off"
                                       className={classes.selectButton}>
                                     <Button onClick={this.openYearList}

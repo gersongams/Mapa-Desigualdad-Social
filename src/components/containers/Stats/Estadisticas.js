@@ -28,7 +28,7 @@ import {
     YAxis
 } from 'recharts'
 
-import * as DATA from '../../assets/departamentos';
+import * as DATA from '../../../assets/departamentos';
 
 const styles = theme => ({
     root: {
@@ -101,8 +101,8 @@ class Estadisticas extends Component {
         data: [],
         filteredData: [],
         dataRadar: [],
-        open1: false,
-        open2: false
+        openAttributeList: false,
+        openDepartmentList: false
     };
 
     componentDidMount() {
@@ -136,91 +136,91 @@ class Estadisticas extends Component {
     };
 
     changeData = () => {
-        let dep1 = this.state.data.filter((item) => item.departamento === this.state.selected_dep);
-        let dep2 = this.state.data.filter((item) => item.departamento === this.state.compare_with);
+        let department1 = this.state.data.filter((item) => item.departamento === this.state.selected_dep);
+        let department2 = this.state.data.filter((item) => item.departamento === this.state.compare_with);
 
-        this.setState({filteredData: this.getDataOfYear(dep1, dep2, this.state.selected_prop)})
+        this.setState({filteredData: this.getDataOfYear(department1, department2, this.state.selected_prop)})
     };
 
     normalize = (val, max, min) => {
         return ((val - min) / (max - min) * 100);
     };
 
-    getDataOfYear = (arr1, arr2, selected_prop) => {
-        let res = [];
-        let dataRadar = [];
-        const years = [2003, 2007, 2010, 2011, 2012];
+getDataOfYear = (arr1, arr2, selected_prop) => {
+    let res = [];
+    let dataRadar = [];
+    const years = [2003, 2007, 2010, 2011, 2012];
 
-        years.map((anio) => {
-            let dep1 = arr1.find(item => item.anio === anio);
-            let dep2 = arr2.find(item => item.anio === anio);
+    years.map((anio) => {
+        let department1 = arr1.find(item => item.anio === anio);
+        let department2 = arr2.find(item => item.anio === anio);
 
-            if (anio === 2012) {
-                dataRadar = [
-                    {
-                        attr: "POB",
-                        [this.state.selected_dep]: this.normalize(dep1.habitantes, 9395149, 102174),
-                        [this.state.compare_with]: this.normalize(dep2.habitantes, 9395149, 102174),
-                        fullMark: 100
-                    },
-                    {
-                        attr: "IDH",
-                        [this.state.selected_dep]: this.normalize(dep1.idh, 0.634, 0.1725),
-                        [this.state.compare_with]: this.normalize(dep2.idh, 0.634, 0.1725),
-                        fullMark: 100
-                    },
-                    {
-                        attr: "EVN",
-                        [this.state.selected_dep]: this.normalize(dep1.evn, 79.22, 64.09),
-                        [this.state.compare_with]: this.normalize(dep2.evn, 79.22, 64.09),
-                        fullMark: 100
-                    },
-                    {
-                        attr: "POB_ESC",
-                        [this.state.selected_dep]: this.normalize(dep1.pob_esc, 88.27, 29.75),
-                        [this.state.compare_with]: this.normalize(dep2.pob_esc, 88.27, 29.75),
-                        fullMark: 100
-                    },
-                    {
-                        attr: "ANIOS_EDU",
-                        [this.state.selected_dep]: this.normalize(dep1.anios_educ, 11.31, 4.88),
-                        [this.state.compare_with]: this.normalize(dep2.anios_educ, 11.31, 4.88),
-                        fullMark: 100
-                    },
-                    {
-                        attr: "ING_PROM",
-                        [this.state.selected_dep]: this.normalize(dep1.ing_prom, 1042.5, 131.9),
-                        [this.state.compare_with]: this.normalize(dep2.ing_prom, 1042.5, 131.9),
-                        fullMark: 100
-                    }
-                ];
-                this.setState({dataRadar: dataRadar});
-            }
+        if (anio === 2012) {
+            dataRadar = [
+                {
+                    attr: "POB",
+                    [this.state.selected_dep]: this.normalize(department1.habitantes, 9395149, 102174),
+                    [this.state.compare_with]: this.normalize(department2.habitantes, 9395149, 102174),
+                    fullMark: 100
+                },
+                {
+                    attr: "IDH",
+                    [this.state.selected_dep]: this.normalize(department1.idh, 0.634, 0.1725),
+                    [this.state.compare_with]: this.normalize(department2.idh, 0.634, 0.1725),
+                    fullMark: 100
+                },
+                {
+                    attr: "EVN",
+                    [this.state.selected_dep]: this.normalize(department1.evn, 79.22, 64.09),
+                    [this.state.compare_with]: this.normalize(department2.evn, 79.22, 64.09),
+                    fullMark: 100
+                },
+                {
+                    attr: "POB_ESC",
+                    [this.state.selected_dep]: this.normalize(department1.pob_esc, 88.27, 29.75),
+                    [this.state.compare_with]: this.normalize(department2.pob_esc, 88.27, 29.75),
+                    fullMark: 100
+                },
+                {
+                    attr: "ANIOS_EDU",
+                    [this.state.selected_dep]: this.normalize(department1.anios_educ, 11.31, 4.88),
+                    [this.state.compare_with]: this.normalize(department2.anios_educ, 11.31, 4.88),
+                    fullMark: 100
+                },
+                {
+                    attr: "ING_PROM",
+                    [this.state.selected_dep]: this.normalize(department1.ing_prom, 1042.5, 131.9),
+                    [this.state.compare_with]: this.normalize(department2.ing_prom, 1042.5, 131.9),
+                    fullMark: 100
+                }
+            ];
+            this.setState({dataRadar: dataRadar});
+        }
 
-            res.push({
-                year: anio,
-                selected_prop: selected_prop,
-                [this.state.selected_dep]: dep1[selected_prop],
-                [this.state.compare_with]: dep2[selected_prop]
-            });
+        res.push({
+            year: anio,
+            selected_prop: selected_prop,
+            [this.state.selected_dep]: department1[selected_prop],
+            [this.state.compare_with]: department2[selected_prop]
         });
-        return res;
+    });
+    return res;
+};
+
+    closeAttributeList = () => {
+        this.setState({openAttributeList: false});
     };
 
-    handleClose1 = () => {
-        this.setState({open1: false});
+    openAttributeList = () => {
+        this.setState({openAttributeList: true});
     };
 
-    handleOpen1 = () => {
-        this.setState({open1: true});
+    closeDepartmentList = () => {
+        this.setState({openDepartmentList: false});
     };
 
-    handleClose2 = () => {
-        this.setState({open2: false});
-    };
-
-    handleOpen2 = () => {
-        this.setState({open2: true});
+    openDepartmentList = () => {
+        this.setState({openDepartmentList: true});
     };
 
 
@@ -291,16 +291,16 @@ class Estadisticas extends Component {
                             <div className={classes.buttons}>
                                 <form autoComplete="off"
                                       className={classes.selectButton}>
-                                    <Button onClick={this.handleOpen1}
+                                    <Button onClick={this.openAttributeList}
                                             variant="raised"
                                             color="primary">
                                         Atributo: {this.state.selected_prop}
                                     </Button>
                                     <FormControl className={classes.formControl}>
                                         <Select
-                                            open={this.state.open1}
-                                            onClose={this.handleClose1}
-                                            onOpen={this.handleOpen1}
+                                            open={this.state.openAttributeList}
+                                            onClose={this.closeAttributeList}
+                                            onOpen={this.openAttributeList}
                                             value={this.state.selected_prop}
                                             onChange={this.changeProp}>
                                             {
@@ -318,16 +318,16 @@ class Estadisticas extends Component {
                                 </form>
                                 <form autoComplete="off"
                                       className={classes.selectButton}>
-                                    <Button onClick={this.handleOpen2}
+                                    <Button onClick={this.openDepartmentList}
                                             variant="raised"
                                             color="primary">
                                         Comparar con: {this.state.compare_with}
                                     </Button>
                                     <FormControl className={classes.formControl}>
                                         <Select
-                                            open={this.state.open2}
-                                            onClose={this.handleClose2}
-                                            onOpen={this.handleOpen2}
+                                            open={this.state.openDepartmentList}
+                                            onClose={this.closeDepartmentList}
+                                            onOpen={this.openDepartmentList}
                                             value={this.state.compare_with}
                                             onChange={this.changeComparation}
                                         >
