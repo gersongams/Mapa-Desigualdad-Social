@@ -376,72 +376,71 @@ getDataOfYear = (arr1, arr2, selected_prop) => {
                                           md={6}
                                           xs={12}>
                                         <ResponsiveContainer>
-                                            <BarChart width={600}
-                                                      height={300}
-                                                      data={this.state.filteredData}
-                                                      margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                                                <CartesianGrid strokeDasharray="3 3"/>
-                                                <XAxis dataKey="year"/>
-                                                <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
-                                                <Tooltip/>
-                                                <Legend/>
-                                                <Bar dataKey={this.state.selected_dep}
-                                                     fill="#0B1D51"/>
-                                                <Bar dataKey={this.state.compare_with}
-                                                     fill="#fe9922"/>
-                                            </BarChart>
+<BarChart width={600}
+          height={300}
+          data={this.state.filteredData}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+    <CartesianGrid strokeDasharray="3 3"/>
+    <XAxis dataKey="year"/>
+    <YAxis unit={(this.state.selected_prop === "idh" || this.state.selected_prop === "pob_esc") ? "%" : ""}/>
+    <Tooltip/>
+    <Legend/>
+    <Bar dataKey={this.state.selected_dep}
+         fill="#0B1D51"/>
+    <Bar dataKey={this.state.compare_with}
+         fill="#fe9922"/>
+</BarChart>
                                         </ResponsiveContainer>
                                     </Grid>
                                     <Grid item
                                           md={6}
                                           xs={12}>
                                         <ResponsiveContainer>
-                                            <AreaChart width={600}
-                                                       height={400}
-                                                       data={this.state.filteredData}
-                                                       margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                                                <CartesianGrid strokeDasharray="3 3"/>
-                                                <XAxis dataKey="year"/>
-                                                <YAxis/>
-                                                <Tooltip/>
-                                                <Area type='monotone'
-                                                      dataKey={this.state.selected_dep}
-                                                      stackId="1"
-                                                      stroke='#8884d8'
-                                                      fill='#0B1D51'/>
-                                                <Area type='monotone'
-                                                      dataKey={this.state.compare_with}
-                                                      stackId="1"
-                                                      stroke='#82ca9d'
-                                                      fill='#fe9922'/>
-                                            </AreaChart>
+<AreaChart width={600}
+           height={400}
+           data={this.state.filteredData}
+           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+    <CartesianGrid strokeDasharray="3 3"/>
+    <XAxis dataKey="year"/>
+    <YAxis/>
+    <Tooltip/>
+    <Area type='monotone'
+          dataKey={this.state.selected_dep}
+          stackId="1"
+          stroke='#8884d8'
+          fill='#0B1D51'/>
+    <Area type='monotone'
+          dataKey={this.state.compare_with}
+          stackId="1"
+          stroke='#82ca9d'
+          fill='#fe9922'/>
+</AreaChart>
                                         </ResponsiveContainer>
                                     </Grid>
                                     <Grid item
                                           md={6}
                                           xs={12}>
                                         <ResponsiveContainer>
-                                            <RadarChart outerRadius={90}
-                                                        width={600}
-                                                        height={300}
-                                                        data={this.state.dataRadar}>
-                                                <PolarGrid/>
-                                                <PolarAngleAxis dataKey="attr"/>
-                                                <PolarRadiusAxis angle={90}
-                                                                 domain={[0, 100]}/>
-                                                <Radar name={this.state.selected_dep}
-                                                       dataKey={this.state.selected_dep}
-                                                       stroke="#0B1D51"
-                                                       fill="#0B1D51"
-                                                       fillOpacity={0.6}/>
-                                                <Radar name={this.state.compare_with}
-                                                       dataKey={this.state.compare_with}
-                                                       stroke="#fe9922"
-                                                       fill="#fe9922"
-                                                       fillOpacity={0.6}/>
-                                                <Legend/>
-
-                                            </RadarChart>
+<RadarChart outerRadius={90}
+            width={600}
+            height={300}
+            data={this.state.dataRadar}>
+    <PolarGrid/>
+    <PolarAngleAxis dataKey="attr"/>
+    <PolarRadiusAxis angle={90}
+                     domain={[0, 100]}/>
+    <Radar name={this.state.selected_dep}
+           dataKey={this.state.selected_dep}
+           stroke="#0B1D51"
+           fill="#0B1D51"
+           fillOpacity={0.6}/>
+    <Radar name={this.state.compare_with}
+           dataKey={this.state.compare_with}
+           stroke="#fe9922"
+           fill="#fe9922"
+           fillOpacity={0.6}/>
+    <Legend/>
+</RadarChart>
                                         </ResponsiveContainer>
                                     </Grid>
                                 </Grid>
