@@ -262,9 +262,8 @@ class MapContainer extends Component {
                             features: indicadores
                         });
                         if (indicadores[0].properties.ID_PROV !== ID_PROV) {
-                            /*console.log("updating: ",indicadores[0].properties);*/
                             this.updatePlace(indicadores[0].properties);
-                            ID_PROV = indicadores[0].properties.FIPS;
+                            ID_PROV = indicadores[0].properties.ID_PROV;
                         }
                     } else if (indicadores.length > 0 && this.map.getZoom() >= 8.0) {
                         this.map.getSource("highlight").setData({
@@ -272,9 +271,8 @@ class MapContainer extends Component {
                             features: indicadores
                         });
                         if (indicadores[0].properties.ID_PROV !== ID_PROV) {
-                            /*console.log("updating: ",indicadores[0].properties);*/
                             this.updatePlace(indicadores[0].properties);
-                            ID_PROV = indicadores[0].properties.FIPS;
+                            ID_PROV = indicadores[0].properties.ID_PROV;
                         }
                     } else {
                         this.map.getCanvas().style.cursor = "default";
