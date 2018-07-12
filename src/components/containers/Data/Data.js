@@ -231,7 +231,7 @@ getData = () => {
                           md={9}>
                         <div className={classes.tableContainer}>
                             <div className={classes.titleZone}>
-                                <h3>Datos por distrito del departamento de: {this.state.selected_dep}</h3>
+                                <h3>Datos por distritos del departamento de: {this.state.selected_dep}</h3>
                                 <form autoComplete="off"
                                       className={classes.selectButton}>
                                     <Button onClick={this.openYearList}

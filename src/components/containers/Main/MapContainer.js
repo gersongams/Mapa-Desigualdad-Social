@@ -372,7 +372,7 @@ class MapContainer extends Component {
                                         }}>
                                             <h3 style={{margin: "0.5rem 0"}}>Lugar</h3>
                                             <div style={{margin: "0.5rem 0"}}>
-                                                <h4 style={{display: "inline"}}>Distrito:</h4>
+                                                <h4 style={{display: "inline"}}>Provincia:</h4>
                                                 <p style={{display: "inline"}}> {this.capitalize(this.state.place.P_NOMB)}</p>
                                             </div>
                                             <div style={{margin: "0.5rem 0"}}>
