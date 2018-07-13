@@ -179,6 +179,12 @@ class Data extends Component {
         this.setState({selected_dep: departamento}, () => this.getData());
     };
 
+    changeSelectedDepartment = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({selected_dep: event.target.value}, () => this.changeData());
+    };
+
     changeYear = (event) => {
         this.setState({selectedYear: event.target.value}, () => this.getData());
     };
@@ -208,6 +214,14 @@ class Data extends Component {
 
     handleChangeRowsPerPage = event => {
         this.setState({rowsPerPage: event.target.value});
+    };
+
+    closeSelectDepartment = () => {
+        this.setState({openSelectDepartment: false});
+    };
+
+    openSelectDepartment = () => {
+        this.setState({openSelectDepartment: true});
     };
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -250,9 +264,9 @@ class Data extends Component {
                           md={9}>
                         <div className={classes.tableContainer}>
                             <div className={classes.titleZone}>
-                                <h3>Datos por distritos del departamento de :
+                                <h3>Datos por distritos del departamento de
                                     <span className={classes.cityTitle}>
-                                    {this.state.selected_dep}
+                                    {" " + this.state.selected_dep}
                                     </span>
                                     <form autoComplete="off"
                                           className={classes.departmentButton}>
