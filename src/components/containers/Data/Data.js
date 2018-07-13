@@ -26,7 +26,25 @@ const styles = theme => ({
     gridContainer: {
         height: "100%"
     },
-    citySelectorWrapper: {},
+    citySelectorWrapper: {
+        '@media (max-width: 1024px)': {
+            display: "none"
+        },
+    },
+    cityTitle: {
+        '@media (max-width: 1024px)': {
+            display: "none"
+        },
+    },
+    departmentButton: {
+        marginLeft: 12,
+        '@media (min-width: 1024px)': {
+            display: "none"
+        },
+        '@media (max-width: 1024px)': {
+            display: "initial"
+        },
+    },
     statsWrapper: {
         display: "flex",
         flexDirection: "column",
@@ -41,7 +59,8 @@ const styles = theme => ({
     titleZone: {
         display: "flex",
         padding: "0 2rem",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     graphWrapper: {
         display: "flex",
@@ -110,18 +129,18 @@ class Data extends Component {
         distritosData: []
     };
 
-componentDidMount() {
-    this.getDepartamentos();
+    componentDidMount() {
+        this.getDepartamentos();
 
-    const API = 'https://api-distritos-peru.herokuapp.com/';
-    fetch(API, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {'Content-Type': 'json'},
-    })
-        .then(response => response.json())
-        .then(data => this.setState({distritosData: data}, () => this.getData()));
-}
+        const API = 'https://api-distritos-peru.herokuapp.com/';
+        fetch(API, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {'Content-Type': 'json'},
+        })
+            .then(response => response.json())
+            .then(data => this.setState({distritosData: data}, () => this.getData()));
+    }
 
     getDepartamentos = () => {
         let list = [];
@@ -132,29 +151,29 @@ componentDidMount() {
         this.setState({departamentos})
     };
 
-getData = () => {
-    let filteredData;
-    this.setState({page: 0});
+    getData = () => {
+        let filteredData;
+        this.setState({page: 0});
 
-    filteredData = this.state.distritosData.filter(item => {
-        return item.DEPARTAMENTO === this.state.selected_dep;
-    });
+        filteredData = this.state.distritosData.filter(item => {
+            return item.DEPARTAMENTO === this.state.selected_dep;
+        });
 
-    filteredData = filteredData.map((data) => {
-        return {
-            DEPARTAMENTO: data.DEPARTAMENTO,
-            year: this.state.selectedYear,
-            distrito: data.distrito,
-            habitantes: data['habitantes' + "_" + this.state.selectedYear],
-            idh: data['idh' + "_" + this.state.selectedYear],
-            evn: data['evn' + "_" + this.state.selectedYear],
-            pob_esc: data['pob_esc' + "_" + this.state.selectedYear],
-            anios_educ: data['anios_educ' + "_" + this.state.selectedYear],
-            ing_prom: data['ing_prom' + "_" + this.state.selectedYear]
-        }
-    });
-    this.setState({data: filteredData});
-};
+        filteredData = filteredData.map((data) => {
+            return {
+                DEPARTAMENTO: data.DEPARTAMENTO,
+                year: this.state.selectedYear,
+                distrito: data.distrito,
+                habitantes: data['habitantes' + "_" + this.state.selectedYear],
+                idh: data['idh' + "_" + this.state.selectedYear],
+                evn: data['evn' + "_" + this.state.selectedYear],
+                pob_esc: data['pob_esc' + "_" + this.state.selectedYear],
+                anios_educ: data['anios_educ' + "_" + this.state.selectedYear],
+                ing_prom: data['ing_prom' + "_" + this.state.selectedYear]
+            }
+        });
+        this.setState({data: filteredData});
+    };
 
     changeDepartment = (departamento) => {
         this.setState({selected_dep: departamento}, () => this.getData());
@@ -231,7 +250,38 @@ getData = () => {
                           md={9}>
                         <div className={classes.tableContainer}>
                             <div className={classes.titleZone}>
-                                <h3>Datos por distritos del departamento de: {this.state.selected_dep}</h3>
+                                <h3>Datos por distritos del departamento de :
+                                    <span className={classes.cityTitle}>
+                                    {this.state.selected_dep}
+                                    </span>
+                                    <form autoComplete="off"
+                                          className={classes.departmentButton}>
+                                        <Button onClick={this.openSelectDepartment}
+                                                variant="raised"
+                                                color="primary">
+                                            {this.state.selected_dep}
+                                        </Button>
+                                        <FormControl className={classes.formControl}>
+                                            <Select
+                                                open={this.state.openSelectDepartment}
+                                                onClose={this.closeSelectDepartment}
+                                                onOpen={this.openSelectDepartment}
+                                                value={this.state.selected_dep}
+                                                onChange={this.changeSelectedDepartment}>
+                                                {
+                                                    this.state.departamentos.map((departamento) => {
+                                                        return (
+                                                            <MenuItem key={departamento}
+                                                                      value={departamento}>
+                                                                {departamento}
+                                                            </MenuItem>
+                                                        );
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </form>
+                                </h3>
                                 <form autoComplete="off"
                                       className={classes.selectButton}>
                                     <Button onClick={this.openYearList}
