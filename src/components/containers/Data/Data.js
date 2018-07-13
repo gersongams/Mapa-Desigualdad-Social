@@ -126,7 +126,8 @@ class Data extends Component {
         page: 0,
         rowsPerPage: 7,
         openYea: false,
-        distritosData: []
+        distritosData: [],
+        openSelectDepartment: false
     };
 
     componentDidMount() {
@@ -182,7 +183,7 @@ class Data extends Component {
     changeSelectedDepartment = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.setState({selected_dep: event.target.value}, () => this.changeData());
+        this.setState({selected_dep: event.target.value}, () => this.getData());
     };
 
     changeYear = (event) => {
@@ -283,7 +284,7 @@ class Data extends Component {
                                                 value={this.state.selected_dep}
                                                 onChange={this.changeSelectedDepartment}>
                                                 {
-                                                    this.state.departamentos.map((departamento) => {
+                                                    departamentos.map((departamento) => {
                                                         return (
                                                             <MenuItem key={departamento}
                                                                       value={departamento}>
